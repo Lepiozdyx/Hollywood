@@ -20,14 +20,14 @@ struct RootView: View {
             
             VStack(spacing: 14) {
                 Text("LETS'S GO")
-                    .customfont(28)
+                    .customfont(24)
                 
                 Spacer()
-                // MARK: PopularPhrasesView()
-                NavigationLink(destination: EmptyView()) {
+                
+                NavigationLink(destination: PopularPhrasesView()) {
                     ActionButtonView(
                         text: "POPULAR PHRASES",
-                        fontSize: 20,
+                        fontSize: 18,
                         width: 240,
                         height: 100
                     )
@@ -36,12 +36,13 @@ struct RootView: View {
                 // MARK: MoviesPicturesView()
                 NavigationLink(destination: EmptyView()) {
                     ActionButtonView(
-                        text: "MOVIE PICTURES DESCRIPTION",
-                        fontSize: 20,
+                        text: "MOVIE PICTURES",
+                        fontSize: 18,
                         width: 240,
                         height: 100
                     )
                 }
+                
                 Spacer()
             }
             .padding()

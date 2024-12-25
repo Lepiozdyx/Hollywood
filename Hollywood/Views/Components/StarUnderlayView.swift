@@ -13,7 +13,7 @@ struct StarUnderlayView: View {
     var body: some View {
         Image(.starUnderlay)
             .resizable()
-            .frame(width: 110, height: 50)
+            .frame(width: 100, height: 50)
             .overlay {
                 HStack(spacing: 4) {
                     Image(systemName: "star.fill")
@@ -29,5 +29,5 @@ struct StarUnderlayView: View {
 }
 
 #Preview {
-    StarUnderlayView(stars: "50")
+    StarUnderlayView(stars: "150")
 }

@@ -14,32 +14,35 @@ struct PopularPhrasesView: View {
         ZStack(alignment: .top) {
             BackgroundView()
             
-            HStack {
+            HStack(alignment: .top) {
                 BackButtonView()
                 Spacer()
+                StarUnderlayView(stars: "50")
             }
             .padding()
             
             VStack {
-                Text("POPULAR PHRASES")
-                    .customfont(28)
-                
                 Spacer()
                 
                 Image(.textUnderlay)
                     .resizable()
-                    .frame(maxWidth: 450, maxHeight: 200)
-                    .overlay(alignment: .topTrailing) {
-                        // Stars counter
-                        StarUnderlayView(stars: "50")
-                            .offset(x: 5, y: -5)
-                    }
+                    .frame(maxWidth: 450, maxHeight: 180)
                     .overlay {
                         // Phrase
                         Text("MAY THE FORCE BE WITH YOU")
-                            .customfont(20)
-                            .padding(.top)
+                            .customfont(18)
                     }
+                    .overlay(alignment: .bottomTrailing) {
+                        // Ability buttons
+                        HStack {
+                            AbilityButtonView(ability: Ability.init(type: .fiftyfifty, count: 3, isActive: false)) {}
+                            
+                            AbilityButtonView(ability: Ability.init(type: .righttomakeamistake, count: 0, isActive: true)) {}
+                        }
+                        .offset(x: -10, y: 16)
+                    }
+                
+                Spacer()
                 
                 // Buttons Grid
                 LazyVGrid(columns: columns, spacing: 4) {
@@ -49,14 +52,15 @@ struct PopularPhrasesView: View {
                         } label: {
                             ActionButtonView(
                                 text: "ANSWER",
-                                fontSize: 26,
-                                width: 220,
-                                height: 90
+                                fontSize: 18,
+                                width: 200,
+                                height: 75
                             )
                         }
                     }
                 }
                 .frame(maxWidth: 450)
+                .padding(.top)
                 
                 Spacer()
             }
