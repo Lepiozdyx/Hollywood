@@ -20,8 +20,11 @@ struct GameOverView: View {
                 .frame(maxWidth: 350, maxHeight: 300)
                 .overlay {
                     VStack(spacing: 20) {
-                        Text("GAME OVER!")
+                        Text("GAME OVER")
                             .customfont(20)
+                        
+                        Text("GOOD JOB, BUDDY!")
+                            .customfont(14)
                         
                         Button {
                             onTap()

@@ -66,7 +66,7 @@ struct PopularPhrasesView: View {
                         } label: {
                             ActionButtonView(
                                 text: option.uppercased(),
-                                fontSize: 18,
+                                fontSize: 14,
                                 width: 200,
                                 height: 75
                             )
@@ -123,13 +123,15 @@ struct AnswerButtonModifier: ViewModifier {
             .overlay {
                 if selectedAnswer == option {
                     if showWrongAnimation {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.red, lineWidth: 2)
-                            .scaleEffect(1.05)
+                        Capsule()
+                            .foregroundStyle(.red)
+                            .opacity(0.4)
+                            .shadow(color: .red, radius: 10)
                     } else if showCorrectAnimation {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.green, lineWidth: 2)
-                            .scaleEffect(1.05)
+                        Capsule()
+                            .foregroundStyle(.green)
+                            .opacity(0.3)
+                            .shadow(color: .green, radius: 10)
                     }
                 }
             }

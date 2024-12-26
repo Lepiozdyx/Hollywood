@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AbilityShopView: View {
-    
+    @StateObject private var vm = AbilityShopViewModel()
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -17,7 +17,7 @@ struct AbilityShopView: View {
             HStack(alignment: .top) {
                 BackButtonView()
                 Spacer()
-                StarUnderlayView(stars: "50")
+                StarUnderlayView(stars: "\(vm.gameState.stars)")
             }
             .padding()
             
@@ -27,9 +27,9 @@ struct AbilityShopView: View {
                     ForEach(AbilityType.allCases, id: \.self) { ability in
                         AbilityItemView(
                             ability: ability,
-                            purchasedCount: 1,
-                            userCoins: 1,
-                            action: {}
+                            purchasedCount: vm.getAbilityCount(ability),
+                            userCoins: vm.gameState.stars,
+                            action: { vm.buyAbility(ability) }
                         )
                     }
                 }
@@ -38,6 +38,15 @@ struct AbilityShopView: View {
             .padding(.horizontal)
         }
         .navigationBarBackButtonHidden(true)
+        .alert("WELCOME!", isPresented: $vm.showWelcomeAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Here's a gift of 50 stars to get you started!")
+                .customfont(14)
+        }
+        .onAppear {
+            vm.onAppear()
+        }
     }
 }
 
