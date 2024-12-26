@@ -9,6 +9,7 @@ import SwiftUI
 
 struct GameOverView: View {
     @Environment(\.dismiss) private var dismiss
+    let onTap: () -> Void
     
     var body: some View {
         ZStack {
@@ -23,9 +24,8 @@ struct GameOverView: View {
                             .customfont(20)
                         
                         Button {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                dismiss()
-                            }
+                            onTap()
+                            dismiss()
                         } label: {
                             ActionButtonView(
                                 text: "MENU",
@@ -41,5 +41,5 @@ struct GameOverView: View {
 }
 
 #Preview {
-    GameOverView()
+    GameOverView(onTap: {})
 }

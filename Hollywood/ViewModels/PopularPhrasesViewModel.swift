@@ -11,8 +11,9 @@ final class PopularPhrasesViewModel: ObservableObject {
     @Published var gameState: GameState
     @Published var isGameOver: Bool = false
     @Published var showWrongAnswerAnimation: Bool = false
-    @Published var disabledAnswerButtons: Set<String> = []
     @Published var showCorrectAnswerAnimation: Bool = false
+    @Published var selectedAnswer: String?
+    @Published var disabledAnswerButtons: Set<String> = []
     
     private var isAnimating: Bool = false
     
@@ -39,6 +40,9 @@ final class PopularPhrasesViewModel: ObservableObject {
         
         do {
             self.gameState = try storageService.loadGameState()
+            // Сбрасываем состояние игры при создании нового ViewModel
+            self.gameState.answeredQuotes.removeAll()
+            try storageService.saveGameState(self.gameState)
         } catch {
             self.gameState = GameState()
         }
@@ -54,6 +58,7 @@ final class PopularPhrasesViewModel: ObservableObject {
     func handleAnswer(_ answer: String) {
         guard let quote = currentQuote, !isAnimating else { return }
         isAnimating = true
+        selectedAnswer = answer
         
         let (isCorrect, newState) = gameService.handleAnswer(answer, for: quote, gameState: gameState)
         gameState = newState
@@ -63,20 +68,28 @@ final class PopularPhrasesViewModel: ObservableObject {
         if isCorrect {
             showCorrectAnswerAnimation = true
             Task {
-                try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                try? await Task.sleep(nanoseconds: 1_000_000_000)
                 showCorrectAnswerAnimation = false
+                selectedAnswer = nil
                 await loadNextQuote()
                 isAnimating = false
             }
         } else {
             if gameState.abilities.first(where: { $0.type == .righttomakeamistake && $0.isActive }) != nil {
-                disabledAnswerButtons.insert(answer)
-                isAnimating = false
+                showWrongAnswerAnimation = true
+                Task {
+                    try? await Task.sleep(nanoseconds: 500_000_000)
+                    showWrongAnswerAnimation = false
+                    selectedAnswer = nil
+                    disabledAnswerButtons.insert(answer)
+                    isAnimating = false
+                }
             } else {
                 showWrongAnswerAnimation = true
                 Task {
-                    try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+                    try? await Task.sleep(nanoseconds: 1_000_000_000)
                     showWrongAnswerAnimation = false
+                    selectedAnswer = nil
                     await loadNextQuote()
                     isAnimating = false
                 }
@@ -90,6 +103,15 @@ final class PopularPhrasesViewModel: ObservableObject {
         if let newState = gameService.useAbility(type, gameState: gameState) {
             gameState = newState
             try? storageService.saveGameState(gameState)
+        }
+    }
+    
+    func resetGame() {
+        gameState.answeredQuotes.removeAll()
+        isGameOver = false
+        try? storageService.saveGameState(gameState)
+        Task {
+            await loadNextQuote()
         }
     }
     

@@ -74,8 +74,11 @@ struct PopularPhrasesView: View {
                         .disabled(vm.disabledAnswerButtons.contains(option))
                         .opacity(vm.disabledAnswerButtons.contains(option) ? 0.6 : 1)
                         .modifier(AnswerButtonModifier(
-                            showWrongAnimation: vm.showWrongAnswerAnimation &&
-                            vm.currentQuote?.correctAnswer != option
+                            option: option,
+                            correctAnswer: vm.currentQuote?.correctAnswer,
+                            selectedAnswer: vm.selectedAnswer,
+                            showWrongAnimation: vm.showWrongAnswerAnimation,
+                            showCorrectAnimation: vm.showCorrectAnswerAnimation
                         ))
                     }
                 }
@@ -86,9 +89,9 @@ struct PopularPhrasesView: View {
             }
             .padding()
             
-            // Game Over Sheet
+            // MARK: Game Over view
             if vm.isGameOver {
-                GameOverView()
+                GameOverView { vm.resetGame() }
                     .transition(.opacity.combined(with: .scale))
             }
         }
@@ -105,16 +108,29 @@ struct PopularPhrasesView: View {
 
 // MARK: Custom modifier for answer button animations
 struct AnswerButtonModifier: ViewModifier {
+    let option: String
+    let correctAnswer: String?
+    let selectedAnswer: String?
     let showWrongAnimation: Bool
+    let showCorrectAnimation: Bool
     
     func body(content: Content) -> some View {
         content
-            .scaleEffect(showWrongAnimation ? 0.95 : 1.0)
+            .scaleEffect(
+                (showWrongAnimation || showCorrectAnimation) &&
+                selectedAnswer == option ? 0.95 : 1.0
+            )
             .overlay {
-                if showWrongAnimation {
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(.red, lineWidth: 2)
-                        .scaleEffect(1.05)
+                if selectedAnswer == option {
+                    if showWrongAnimation {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.red, lineWidth: 2)
+                            .scaleEffect(1.05)
+                    } else if showCorrectAnimation {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.green, lineWidth: 2)
+                            .scaleEffect(1.05)
+                    }
                 }
             }
     }
