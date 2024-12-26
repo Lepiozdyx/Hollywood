@@ -15,6 +15,7 @@ final class PopularPhrasesViewModel: ObservableObject {
     @Published var selectedAnswer: String?
     @Published var disabledAnswerButtons: Set<String> = []
     
+    private var fiftyFiftyDisabledAnswers: Set<String> = []
     private var totalQuotesCount: Int = 0
     private var isAnimating: Bool = false
     
@@ -50,6 +51,20 @@ final class PopularPhrasesViewModel: ObservableObject {
     }
     
     // MARK: - Public Methods
+    func isButtonDisabled(_ option: String) -> Bool {
+        disabledAnswerButtons.contains(option) || fiftyFiftyDisabledAnswers.contains(option)
+    }
+    
+    func getButtonOpacity(_ option: String) -> Double {
+        if fiftyFiftyDisabledAnswers.contains(option) {
+            return 0.5
+        }
+        if disabledAnswerButtons.contains(option) {
+            return 0.5
+        }
+        return 1.0
+    }
+    
     func onAppear() {
         Task {
             do {
@@ -103,6 +118,16 @@ final class PopularPhrasesViewModel: ObservableObject {
     func useAbility(_ type: AbilityType) {
         guard !isAnimating else { return }
         
+        if type == .fiftyfifty {
+            if let currentQuote = currentQuote {
+                let wrongAnswers = currentQuote.options
+                    .filter { $0 != currentQuote.correctAnswer }
+                    .shuffled()
+                    .prefix(2)
+                fiftyFiftyDisabledAnswers = Set(wrongAnswers)
+            }
+        }
+        
         if let newState = gameService.useAbility(type, gameState: gameState) {
             gameState = newState
             try? storageService.saveGameState(gameState)
@@ -112,8 +137,9 @@ final class PopularPhrasesViewModel: ObservableObject {
     func resetGame() {
         gameState.answeredQuotes.removeAll()
         isGameOver = false
-        currentQuote = nil // Важно: сбрасываем текущий вопрос
+        currentQuote = nil
         disabledAnswerButtons.removeAll()
+        fiftyFiftyDisabledAnswers.removeAll()
         try? storageService.saveGameState(gameState)
         Task {
             await loadNextQuote()
@@ -128,13 +154,12 @@ final class PopularPhrasesViewModel: ObservableObject {
                 return
             }
             
-            // Получаем следующий случайный вопрос из неотвеченных
             if let quote = try await quotesService.getRandomQuote(excluding: gameState.answeredQuotes) {
-                // Важно: обновляем UI в главном потоке
                 await MainActor.run {
                     withAnimation {
                         self.currentQuote = quote
                         self.disabledAnswerButtons.removeAll()
+                        self.fiftyFiftyDisabledAnswers.removeAll()
                     }
                 }
             } else {

@@ -58,7 +58,7 @@ struct PopularPhrasesView: View {
                 
                 // MARK: Buttons Grid
                 LazyVGrid(columns: columns, spacing: 4) {
-                    ForEach(vm.currentOptions, id: \.self) { option in
+                    ForEach(vm.currentQuote?.options ?? [], id: \.self) { option in
                         Button {
                             withAnimation(buttonAnimation) {
                                 vm.handleAnswer(option)
@@ -71,8 +71,8 @@ struct PopularPhrasesView: View {
                                 height: 75
                             )
                         }
-                        .disabled(vm.disabledAnswerButtons.contains(option))
-                        .opacity(vm.disabledAnswerButtons.contains(option) ? 0.6 : 1)
+                        .disabled(vm.isButtonDisabled(option))
+                        .opacity(vm.getButtonOpacity(option))
                         .modifier(AnswerButtonModifier(
                             option: option,
                             correctAnswer: vm.currentQuote?.correctAnswer,
