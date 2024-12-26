@@ -15,6 +15,7 @@ final class PopularPhrasesViewModel: ObservableObject {
     @Published var selectedAnswer: String?
     @Published var disabledAnswerButtons: Set<String> = []
     
+    private var totalQuotesCount: Int = 0
     private var isAnimating: Bool = false
     
     // MARK: - Computed Properties
@@ -51,7 +52,14 @@ final class PopularPhrasesViewModel: ObservableObject {
     // MARK: - Public Methods
     func onAppear() {
         Task {
-            await loadNextQuote()
+            do {
+                // Загружаем все вопросы и сохраняем их количество
+                let quotes = try await quotesService.loadQuotes()
+                totalQuotesCount = quotes.count
+                await loadNextQuote()
+            } catch {
+                print("Error loading quotes: \(error)")
+            }
         }
     }
     
@@ -61,39 +69,34 @@ final class PopularPhrasesViewModel: ObservableObject {
         selectedAnswer = answer
         
         let (isCorrect, newState) = gameService.handleAnswer(answer, for: quote, gameState: gameState)
-        gameState = newState
         
-        try? storageService.saveGameState(gameState)
-        
-        if isCorrect {
-            showCorrectAnswerAnimation = true
-            Task {
+        // Используем MainActor для обновления состояния
+        Task { @MainActor in
+            gameState = newState
+            try? storageService.saveGameState(gameState)
+            
+            if isCorrect {
+                showCorrectAnswerAnimation = true
                 try? await Task.sleep(nanoseconds: 1_000_000_000)
                 showCorrectAnswerAnimation = false
                 selectedAnswer = nil
                 await loadNextQuote()
-                isAnimating = false
-            }
-        } else {
-            if gameState.abilities.first(where: { $0.type == .righttomakeamistake && $0.isActive }) != nil {
-                showWrongAnswerAnimation = true
-                Task {
+            } else {
+                if gameState.abilities.first(where: { $0.type == .righttomakeamistake && $0.isActive }) != nil {
+                    showWrongAnswerAnimation = true
                     try? await Task.sleep(nanoseconds: 500_000_000)
                     showWrongAnswerAnimation = false
                     selectedAnswer = nil
                     disabledAnswerButtons.insert(answer)
-                    isAnimating = false
-                }
-            } else {
-                showWrongAnswerAnimation = true
-                Task {
+                } else {
+                    showWrongAnswerAnimation = true
                     try? await Task.sleep(nanoseconds: 1_000_000_000)
                     showWrongAnswerAnimation = false
                     selectedAnswer = nil
                     await loadNextQuote()
-                    isAnimating = false
                 }
             }
+            isAnimating = false
         }
     }
     
@@ -109,6 +112,8 @@ final class PopularPhrasesViewModel: ObservableObject {
     func resetGame() {
         gameState.answeredQuotes.removeAll()
         isGameOver = false
+        currentQuote = nil // Важно: сбрасываем текущий вопрос
+        disabledAnswerButtons.removeAll()
         try? storageService.saveGameState(gameState)
         Task {
             await loadNextQuote()
@@ -118,18 +123,24 @@ final class PopularPhrasesViewModel: ObservableObject {
     // MARK: - Private Methods
     private func loadNextQuote() async {
         do {
-            let totalQuotes = try await quotesService.loadQuotes().count
-            
-            if gameService.isGameOver(gameState: gameState, totalQuotes: totalQuotes) {
+            if gameService.isGameOver(gameState: gameState, totalQuotes: totalQuotesCount) {
                 isGameOver = true
                 return
             }
             
+            // Получаем следующий случайный вопрос из неотвеченных
             if let quote = try await quotesService.getRandomQuote(excluding: gameState.answeredQuotes) {
-                currentQuote = quote
-                disabledAnswerButtons.removeAll()
+                // Важно: обновляем UI в главном потоке
+                await MainActor.run {
+                    withAnimation {
+                        self.currentQuote = quote
+                        self.disabledAnswerButtons.removeAll()
+                    }
+                }
             } else {
-                isGameOver = true
+                await MainActor.run {
+                    self.isGameOver = true
+                }
             }
         } catch {
             print("Error loading quote: \(error)")

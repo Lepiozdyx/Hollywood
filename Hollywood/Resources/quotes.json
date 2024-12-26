@@ -109,6 +109,61 @@
                 "Troy"
             ],
             "correctAnswer": "Braveheart"
+        },
+        {
+            "id": "11",
+            "text": "To infinity and beyond!",
+            "options": [
+                "Toy Story",
+                "Shrek",
+                "Finding Nemo",
+                "The Lion King"
+            ],
+            "correctAnswer": "Toy Story"
+        },
+        {
+            "id": "12",
+            "text": "E.T. phone home.",
+            "options": [
+                "E.T. the Extra-Terrestrial",
+                "Close Encounters of the Third Kind",
+                "Wall-E",
+                "Interstellar"
+            ],
+            "correctAnswer": "E.T. the Extra-Terrestrial"
+        },
+        {
+            "id": "13",
+            "text": "Here’s Johnny!",
+            "options": [
+                "The Shining",
+                "Psycho",
+                "It",
+                "Halloween"
+            ],
+            "correctAnswer": "The Shining"
+        },
+        {
+            "id": "14",
+            "text": "I'm gonna make him an offer he can't refuse.",
+            "options": [
+                "The Godfather",
+                "Scarface",
+                "Casino",
+                "The Sopranos"
+            ],
+            "correctAnswer": "The Godfather"
+        },
+        {
+            "id": "15",
+            "text": "Frankly, my dear, I don't give a damn.",
+            "options": [
+                "Gone with the Wind",
+                "Casablanca",
+                "Citizen Kane",
+                "Lawrence of Arabia"
+            ],
+            "correctAnswer": "Gone with the Wind"
         }
     ]
 }

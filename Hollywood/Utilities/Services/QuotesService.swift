@@ -14,24 +14,37 @@ protocol QuotesServiceProtocol {
 }
 
 final class QuotesService: QuotesServiceProtocol {
-    private var quotes: [Quote] = []
+    // Теперь храним все загруженные вопросы
+    private var allQuotes: [Quote] = []
     
     func loadQuotes() async throws -> [Quote] {
-        guard let url = Bundle.main.url(forResource: "quotes", withExtension: "json") else {
-            throw QuotesError.fileNotFound
+        // Загружаем вопросы только если они еще не загружены
+        if allQuotes.isEmpty {
+            guard let url = Bundle.main.url(forResource: "quotes", withExtension: "json") else {
+                throw QuotesError.fileNotFound
+            }
+            
+            let data = try Data(contentsOf: url)
+            let quotesDTO = try JSONDecoder().decode(QuotesDTO.self, from: data)
+            
+            // Преобразуем DTO в домейн модели
+            allQuotes = quotesDTO.quotes.map { dto in
+                var options = dto.options
+                options.shuffle() // Перемешиваем варианты ответов
+                return Quote(
+                    id: UUID(),
+                    text: dto.text,
+                    options: options,
+                    correctAnswer: dto.correctAnswer
+                )
+            }
         }
         
-        let data = try Data(contentsOf: url)
-        let quotesDTO = try JSONDecoder().decode(QuotesDTO.self, from: data)
-        quotes = quotesDTO.quotes.map { $0.toDomain() }
-        return quotes
+        return allQuotes
     }
     
     func getRandomQuote(excluding answeredQuotes: Set<UUID>) async throws -> Quote? {
-        if quotes.isEmpty {
-            quotes = try await loadQuotes()
-        }
-        
+        let quotes = try await loadQuotes()
         let availableQuotes = quotes.filter { !answeredQuotes.contains($0.id) }
         return availableQuotes.randomElement()
     }
