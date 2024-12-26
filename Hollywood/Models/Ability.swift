@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Ability: Identifiable {
-    let id = UUID()
+struct Ability: Identifiable, Codable {
+    var id = UUID()
     let type: AbilityType
     var count: Int
     var isActive: Bool

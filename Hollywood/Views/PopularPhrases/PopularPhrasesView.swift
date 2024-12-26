@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct PopularPhrasesView: View {
-    let columns = Array(repeating: GridItem(), count: 2)
+    @StateObject private var vm = PopularPhrasesViewModel()
+    
+    private let buttonAnimation = Animation.easeInOut(duration: 0.3)
+    private let columns = Array(
+        repeating: GridItem(.flexible(), spacing: 10),
+        count: 2
+    )
     
     var body: some View {
         ZStack(alignment: .top) {
             BackgroundView()
             
+            // MARK: Top Bar with Back Button and Stars
             HStack(alignment: .top) {
                 BackButtonView()
                 Spacer()
-                StarUnderlayView(stars: "50")
+                StarUnderlayView(stars: "\(vm.gameState.stars)")
             }
             .padding()
             
@@ -28,35 +35,48 @@ struct PopularPhrasesView: View {
                     .resizable()
                     .frame(maxWidth: 450, maxHeight: 180)
                     .overlay {
-                        // Phrase
-                        Text("MAY THE FORCE BE WITH YOU")
-                            .customfont(18)
+                        if let quote = vm.currentQuote {
+                            Text(quote.text.uppercased())
+                                .customfont(18)
+                                .transition(.opacity)
+                                .padding()
+                        }
                     }
                     .overlay(alignment: .bottomTrailing) {
-                        // Ability buttons
+                        // MARK: Ability buttons
                         HStack {
-                            AbilityButtonView(ability: Ability.init(type: .fiftyfifty, count: 3, isActive: false)) {}
-                            
-                            AbilityButtonView(ability: Ability.init(type: .righttomakeamistake, count: 0, isActive: true)) {}
+                            ForEach(vm.gameState.abilities) { ability in
+                                AbilityButtonView(ability: ability) {
+                                    vm.useAbility(ability.type)
+                                }
+                            }
                         }
                         .offset(x: -10, y: 16)
                     }
                 
                 Spacer()
                 
-                // Buttons Grid
+                // MARK: Buttons Grid
                 LazyVGrid(columns: columns, spacing: 4) {
-                    ForEach(0..<4) { _ in
+                    ForEach(vm.currentOptions, id: \.self) { option in
                         Button {
-                            // answer the question action
+                            withAnimation(buttonAnimation) {
+                                vm.handleAnswer(option)
+                            }
                         } label: {
                             ActionButtonView(
-                                text: "ANSWER",
+                                text: option.uppercased(),
                                 fontSize: 18,
                                 width: 200,
                                 height: 75
                             )
                         }
+                        .disabled(vm.disabledAnswerButtons.contains(option))
+                        .opacity(vm.disabledAnswerButtons.contains(option) ? 0.6 : 1)
+                        .modifier(AnswerButtonModifier(
+                            showWrongAnimation: vm.showWrongAnswerAnimation &&
+                            vm.currentQuote?.correctAnswer != option
+                        ))
                     }
                 }
                 .frame(maxWidth: 450)
@@ -65,11 +85,37 @@ struct PopularPhrasesView: View {
                 Spacer()
             }
             .padding()
+            
+            // Game Over Sheet
+            if vm.isGameOver {
+                GameOverView()
+                    .transition(.opacity.combined(with: .scale))
+            }
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            vm.onAppear()
+        }
     }
 }
 
 #Preview {
     PopularPhrasesView()
+}
+
+// MARK: Custom modifier for answer button animations
+struct AnswerButtonModifier: ViewModifier {
+    let showWrongAnimation: Bool
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(showWrongAnimation ? 0.95 : 1.0)
+            .overlay {
+                if showWrongAnimation {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(.red, lineWidth: 2)
+                        .scaleEffect(1.05)
+                }
+            }
+    }
 }
