@@ -7,11 +7,15 @@
 
 import Foundation
 
-struct Quote: Identifiable, Codable, Equatable {
+struct Quote: Identifiable, Codable, Equatable, GameItem {
     let id: UUID
     let text: String
     let options: [String]
     let correctAnswer: String
+    
+    var displayContent: String {
+        return text
+    }
     
     init(id: UUID = UUID(), text: String, options: [String], correctAnswer: String) {
         self.id = id

@@ -33,8 +33,7 @@ struct RootView: View {
                     )
                 }
                 
-                // MARK: MoviesPicturesView()
-                NavigationLink(destination: EmptyView()) {
+                NavigationLink(destination: MoviePicturesView()) {
                     ActionButtonView(
                         text: "MOVIE PICTURES",
                         fontSize: 18,

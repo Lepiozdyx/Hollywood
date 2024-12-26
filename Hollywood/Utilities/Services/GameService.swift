@@ -8,39 +8,35 @@
 import Foundation
 
 protocol GameServiceProtocol {
-    func handleAnswer(_ answer: String, for quote: Quote, gameState: GameState) -> (isCorrect: Bool, newState: GameState)
+    func handleAnswer<T: GameItem>(_ answer: String, for item: T, gameState: GameState) -> (isCorrect: Bool, newState: GameState)
     func useAbility(_ type: AbilityType, gameState: GameState) -> GameState?
     func isGameOver(gameState: GameState, totalQuotes: Int) -> Bool
     func buyAbility(_ type: AbilityType, gameState: GameState) -> GameState?
     func prepareForNextQuote(_ gameState: GameState) -> GameState
-    func removeWrongAnswers(_ options: [String], correctAnswer: String) -> [String]
+    func getDisabledOptions(_ options: [String], correctAnswer: String) -> Set<String>
 }
 
 final class GameService: GameServiceProtocol {
     private let starsForCorrectAnswer = 10
     private let starsForWrongAnswer = -10
     
-    func handleAnswer(_ answer: String, for quote: Quote, gameState: GameState) -> (isCorrect: Bool, newState: GameState) {
+    func handleAnswer<T: GameItem>(_ answer: String, for item: T, gameState: GameState) -> (isCorrect: Bool, newState: GameState) {
         var newState = gameState
-        let isCorrect = answer == quote.correctAnswer
+        let isCorrect = answer == item.correctAnswer
         
         if isCorrect {
             newState.stars += starsForCorrectAnswer
         } else {
-            // Проверяем, активна ли способность пропуска вопроса
             let skipAbilityActive = newState.abilities.first(where: {
                 $0.type == .skipquestion && $0.isActive
             }) != nil
             
-            // Отнимаем звезды только если способность не активна
             if !skipAbilityActive {
-                // Убеждаемся, что баланс не станет отрицательным
                 newState.stars = max(0, newState.stars + starsForWrongAnswer)
             }
         }
         
-        newState.answeredQuotes.insert(quote.id)
-        // Сбрасываем состояние способностей после ответа
+        newState.answeredQuotes.insert(item.id)
         newState = prepareForNextQuote(newState)
         return (isCorrect, newState)
     }
@@ -94,15 +90,11 @@ final class GameService: GameServiceProtocol {
         return newState
     }
     
-    func removeWrongAnswers(_ options: [String], correctAnswer: String) -> [String] {
-        var filteredOptions = options.filter { $0 == correctAnswer }
-        let wrongAnswers = options.filter { $0 != correctAnswer }.shuffled()
-        
-        // Добавляем один неправильный ответ
-        if let wrongAnswer = wrongAnswers.first {
-            filteredOptions.append(wrongAnswer)
-        }
-        
-        return filteredOptions.shuffled()
+    func getDisabledOptions(_ options: [String], correctAnswer: String) -> Set<String> {
+        let wrongAnswers = options
+            .filter { $0 != correctAnswer }
+            .shuffled()
+            .dropFirst() // Оставляем первый неверный ответ активным
+        return Set(wrongAnswers)
     }
 }

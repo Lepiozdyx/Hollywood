@@ -1,5 +1,5 @@
 //
-//  PopularPhrasesViewModel.swift
+//  GameViewModel.swift
 //  Hollywood
 //
 //  Created by Alex on 25.12.2024.
@@ -8,13 +8,13 @@
 import SwiftUI
 
 @MainActor
-final class PopularPhrasesViewModel: ObservableObject {
+final class GameViewModel<Service: GameDataService>: ObservableObject {
     // MARK: - Properties
-    private let quotesService: QuotesServiceProtocol
+    private let dataService: Service
     private let gameService: GameServiceProtocol
     private let storageService: StorageServiceProtocol
     
-    @Published var currentQuote: Quote?
+    @Published var currentItem: Service.Item?
     @Published var gameState: GameState
     @Published var isGameOver: Bool = false
     @Published var showWrongAnswerAnimation: Bool = false
@@ -23,33 +23,26 @@ final class PopularPhrasesViewModel: ObservableObject {
     @Published var disabledAnswerButtons: Set<String> = []
     
     private var fiftyFiftyDisabledAnswers: Set<String> = []
-    private var totalQuotesCount: Int = 0
+    private var totalItemsCount: Int = 0
     private var isAnimating: Bool = false
     
     // MARK: - Computed Properties
     var currentOptions: [String] {
-        if let quote = currentQuote {
-            if gameState.abilities.first(where: { $0.type == .fiftyfifty && $0.isActive }) != nil {
-                return gameService.removeWrongAnswers(quote.options, correctAnswer: quote.correctAnswer)
-            }
-            return quote.options
-        }
-        return []
+        currentItem?.options ?? []
     }
     
     // MARK: - Initialization
     init(
-        quotesService: QuotesServiceProtocol = QuotesService(),
+        dataService: Service,
         gameService: GameServiceProtocol = GameService(),
         storageService: StorageServiceProtocol = StorageService()
     ) {
-        self.quotesService = quotesService
+        self.dataService = dataService
         self.gameService = gameService
         self.storageService = storageService
         
         do {
             self.gameState = try storageService.loadGameState()
-            // Сбрасываем состояние игры при создании нового ViewModel
             self.gameState.answeredQuotes.removeAll()
             try storageService.saveGameState(self.gameState)
         } catch {
@@ -75,21 +68,21 @@ final class PopularPhrasesViewModel: ObservableObject {
     func onAppear() {
         Task {
             do {
-                let quotes = try await quotesService.loadQuotes()
-                totalQuotesCount = quotes.count
-                await loadNextQuote()
+                let items = try await dataService.loadItems()
+                totalItemsCount = items.count
+                await loadNextItem()
             } catch {
-                print("Error loading quotes: \(error)")
+                print("Error loading items: \(error)")
             }
         }
     }
     
     func handleAnswer(_ answer: String) {
-        guard let quote = currentQuote, !isAnimating else { return }
+        guard let item = currentItem, !isAnimating else { return }
         isAnimating = true
         selectedAnswer = answer
         
-        let (isCorrect, newState) = gameService.handleAnswer(answer, for: quote, gameState: gameState)
+        let (isCorrect, newState) = gameService.handleAnswer(answer, for: item, gameState: gameState)
         
         Task { @MainActor in
             gameState = newState
@@ -97,23 +90,20 @@ final class PopularPhrasesViewModel: ObservableObject {
             
             if isCorrect {
                 showCorrectAnswerAnimation = true
-                try? await Task.sleep(nanoseconds: 1_000_000_000)
+                try? await Task.sleep(nanoseconds: 700_000_000)
                 showCorrectAnswerAnimation = false
                 selectedAnswer = nil
-                await loadNextQuote()
+                await loadNextItem()
             } else {
-                // Проверяем, активирована ли способность пропуска вопроса
                 if gameState.abilities.first(where: { $0.type == .skipquestion && $0.isActive }) != nil {
-                    // Если способность активна, просто переходим к следующему вопросу
                     try? await Task.sleep(nanoseconds: 500_000_000)
-                    await loadNextQuote()
+                    await loadNextItem()
                 } else {
-                    // Иначе показываем анимацию неверного ответа
                     showWrongAnswerAnimation = true
-                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+                    try? await Task.sleep(nanoseconds: 700_000_000)
                     showWrongAnswerAnimation = false
                     selectedAnswer = nil
-                    await loadNextQuote()
+                    await loadNextItem()
                 }
             }
             isAnimating = false
@@ -124,12 +114,8 @@ final class PopularPhrasesViewModel: ObservableObject {
         guard !isAnimating else { return }
         
         if type == .fiftyfifty {
-            if let currentQuote = currentQuote {
-                let wrongAnswers = currentQuote.options
-                    .filter { $0 != currentQuote.correctAnswer }
-                    .shuffled()
-                    .prefix(2)
-                fiftyFiftyDisabledAnswers = Set(wrongAnswers)
+            if let item = currentItem {
+                fiftyFiftyDisabledAnswers = gameService.getDisabledOptions(item.options, correctAnswer: item.correctAnswer)
             }
         }
         
@@ -137,10 +123,9 @@ final class PopularPhrasesViewModel: ObservableObject {
             gameState = newState
             try? storageService.saveGameState(gameState)
             
-            // Если это способность пропуска вопроса, сразу переходим к следующему
             if type == .skipquestion {
                 Task {
-                    await loadNextQuote()
+                    await loadNextItem()
                 }
             }
         }
@@ -149,27 +134,27 @@ final class PopularPhrasesViewModel: ObservableObject {
     func resetGame() {
         gameState.answeredQuotes.removeAll()
         isGameOver = false
-        currentQuote = nil
+        currentItem = nil
         disabledAnswerButtons.removeAll()
         fiftyFiftyDisabledAnswers.removeAll()
         try? storageService.saveGameState(gameState)
         Task {
-            await loadNextQuote()
+            await loadNextItem()
         }
     }
     
     // MARK: - Private Methods
-    private func loadNextQuote() async {
+    private func loadNextItem() async {
         do {
-            if gameService.isGameOver(gameState: gameState, totalQuotes: totalQuotesCount) {
+            if gameService.isGameOver(gameState: gameState, totalQuotes: totalItemsCount) {
                 isGameOver = true
                 return
             }
             
-            if let quote = try await quotesService.getRandomQuote(excluding: gameState.answeredQuotes) {
+            if let item = try await dataService.getRandomItem(excluding: gameState.answeredQuotes) {
                 await MainActor.run {
                     withAnimation {
-                        self.currentQuote = quote
+                        self.currentItem = item
                         self.disabledAnswerButtons.removeAll()
                         self.fiftyFiftyDisabledAnswers.removeAll()
                     }
@@ -180,7 +165,7 @@ final class PopularPhrasesViewModel: ObservableObject {
                 }
             }
         } catch {
-            print("Error loading quote: \(error)")
+            print("Error loading item: \(error)")
         }
     }
 }

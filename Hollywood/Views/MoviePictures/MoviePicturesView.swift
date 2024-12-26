@@ -1,14 +1,14 @@
 //
-//  PopularPhrasesView.swift
+//  MoviePicturesView.swift
 //  Hollywood
 //
-//  Created by Alex on 24.12.2024.
+//  Created by Alex on 26.12.2024.
 //
 
 import SwiftUI
 
-struct PopularPhrasesView: View {
-    @StateObject private var vm = GameViewModel(dataService: QuotesService())
+struct MoviePicturesView: View {
+    @StateObject private var vm = GameViewModel(dataService: PicturesService())
     
     private let buttonAnimation = Animation.easeInOut(duration: 0.3)
     private let columns = Array(
@@ -33,13 +33,14 @@ struct PopularPhrasesView: View {
                 
                 Image(.textUnderlay)
                     .resizable()
-                    .frame(maxWidth: 450, maxHeight: 180)
+                    .frame(maxWidth: 450, maxHeight: 340)
                     .overlay {
                         if let item = vm.currentItem {
-                            Text(item.displayContent.uppercased())
-                                .customfont(18)
-                                .transition(.opacity)
+                            Image(item.displayContent)
+                                .resizable()
+                                .scaledToFit()
                                 .padding()
+                                .transition(.opacity)
                         }
                     }
                     .overlay(alignment: .bottomTrailing) {
@@ -103,5 +104,5 @@ struct PopularPhrasesView: View {
 }
 
 #Preview {
-    PopularPhrasesView()
+    MoviePicturesView()
 }
