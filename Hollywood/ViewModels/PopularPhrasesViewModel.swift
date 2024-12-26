@@ -1,3 +1,10 @@
+//
+//  PopularPhrasesViewModel.swift
+//  Hollywood
+//
+//  Created by Alex on 25.12.2024.
+//
+
 import SwiftUI
 
 @MainActor
@@ -68,7 +75,6 @@ final class PopularPhrasesViewModel: ObservableObject {
     func onAppear() {
         Task {
             do {
-                // Загружаем все вопросы и сохраняем их количество
                 let quotes = try await quotesService.loadQuotes()
                 totalQuotesCount = quotes.count
                 await loadNextQuote()
@@ -85,7 +91,6 @@ final class PopularPhrasesViewModel: ObservableObject {
         
         let (isCorrect, newState) = gameService.handleAnswer(answer, for: quote, gameState: gameState)
         
-        // Используем MainActor для обновления состояния
         Task { @MainActor in
             gameState = newState
             try? storageService.saveGameState(gameState)
@@ -97,13 +102,13 @@ final class PopularPhrasesViewModel: ObservableObject {
                 selectedAnswer = nil
                 await loadNextQuote()
             } else {
-                if gameState.abilities.first(where: { $0.type == .righttomakeamistake && $0.isActive }) != nil {
-                    showWrongAnswerAnimation = true
+                // Проверяем, активирована ли способность пропуска вопроса
+                if gameState.abilities.first(where: { $0.type == .skipquestion && $0.isActive }) != nil {
+                    // Если способность активна, просто переходим к следующему вопросу
                     try? await Task.sleep(nanoseconds: 500_000_000)
-                    showWrongAnswerAnimation = false
-                    selectedAnswer = nil
-                    disabledAnswerButtons.insert(answer)
+                    await loadNextQuote()
                 } else {
+                    // Иначе показываем анимацию неверного ответа
                     showWrongAnswerAnimation = true
                     try? await Task.sleep(nanoseconds: 1_000_000_000)
                     showWrongAnswerAnimation = false
@@ -131,6 +136,13 @@ final class PopularPhrasesViewModel: ObservableObject {
         if let newState = gameService.useAbility(type, gameState: gameState) {
             gameState = newState
             try? storageService.saveGameState(gameState)
+            
+            // Если это способность пропуска вопроса, сразу переходим к следующему
+            if type == .skipquestion {
+                Task {
+                    await loadNextQuote()
+                }
+            }
         }
     }
     

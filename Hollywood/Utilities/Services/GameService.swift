@@ -18,6 +18,7 @@ protocol GameServiceProtocol {
 
 final class GameService: GameServiceProtocol {
     private let starsForCorrectAnswer = 10
+    private let starsForWrongAnswer = -10
     
     func handleAnswer(_ answer: String, for quote: Quote, gameState: GameState) -> (isCorrect: Bool, newState: GameState) {
         var newState = gameState
@@ -25,6 +26,17 @@ final class GameService: GameServiceProtocol {
         
         if isCorrect {
             newState.stars += starsForCorrectAnswer
+        } else {
+            // Проверяем, активна ли способность пропуска вопроса
+            let skipAbilityActive = newState.abilities.first(where: {
+                $0.type == .skipquestion && $0.isActive
+            }) != nil
+            
+            // Отнимаем звезды только если способность не активна
+            if !skipAbilityActive {
+                // Убеждаемся, что баланс не станет отрицательным
+                newState.stars = max(0, newState.stars + starsForWrongAnswer)
+            }
         }
         
         newState.answeredQuotes.insert(quote.id)
@@ -37,7 +49,9 @@ final class GameService: GameServiceProtocol {
         var newState = gameState
         
         // Находим индекс способности
-        guard let abilityIndex = newState.abilities.firstIndex(where: { $0.type == type && $0.count > 0 && !$0.isActive }) else {
+        guard let abilityIndex = newState.abilities.firstIndex(where: {
+            $0.type == type && $0.count > 0 && !$0.isActive
+        }) else {
             return nil
         }
         

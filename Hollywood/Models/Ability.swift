@@ -16,19 +16,19 @@ struct Ability: Identifiable, Codable {
 
 enum AbilityType: String, CaseIterable, Codable {
     case fiftyfifty
-    case righttomakeamistake
+    case skipquestion
     
     var price: Int {
         switch self {
         case .fiftyfifty: return 25
-        case .righttomakeamistake: return 25
+        case .skipquestion: return 25
         }
     }
     
     var abilityName: String {
         switch self {
         case .fiftyfifty: return "50/50"
-        case .righttomakeamistake: return "!"
+        case .skipquestion: return "Skip"
         }
     }
     
@@ -36,8 +36,8 @@ enum AbilityType: String, CaseIterable, Codable {
         switch self {
         case .fiftyfifty:
             return "Removes two wrong answers"
-        case .righttomakeamistake:
-            return "Right to make a mistake"
+        case .skipquestion:
+            return "Skip question without penalty"
         }
     }
 }
