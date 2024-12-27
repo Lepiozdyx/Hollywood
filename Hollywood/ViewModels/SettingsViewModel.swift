@@ -30,9 +30,20 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
+    @Published var isHapticsOn: Bool {
+        didSet {
+            SettingsService.shared.isHapticsOn = isHapticsOn
+            
+            if isHapticsOn {
+                HapticService.shared.play(.selection)
+            }
+        }
+    }
+    
     init() {
         self.isSoundOn = SettingsService.shared.isSoundOn
         self.isMusicOn = SettingsService.shared.isMusicOn
+        self.isHapticsOn = SettingsService.shared.isHapticsOn
     }
     
     func toggleSound() {
@@ -41,5 +52,9 @@ final class SettingsViewModel: ObservableObject {
     
     func toggleMusic() {
         isMusicOn.toggle()
+    }
+    
+    func toggleHaptics() {
+        isHapticsOn.toggle()
     }
 }

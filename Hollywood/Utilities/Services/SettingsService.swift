@@ -12,6 +12,7 @@ final class SettingsService {
     private enum Keys: String {
         case isSoundOn
         case isMusicOn
+        case isHapticsOn
     }
     
     static let shared = SettingsService()
@@ -26,12 +27,20 @@ final class SettingsService {
         set { UserDefaults.standard.set(newValue, forKey: Keys.isMusicOn.rawValue) }
     }
     
+    var isHapticsOn: Bool {
+        get { UserDefaults.standard.bool(forKey: Keys.isHapticsOn.rawValue) }
+        set { UserDefaults.standard.set(newValue, forKey: Keys.isHapticsOn.rawValue) }
+    }
+    
     private init() {
         if UserDefaults.standard.object(forKey: Keys.isSoundOn.rawValue) == nil {
             isSoundOn = true
         }
         if UserDefaults.standard.object(forKey: Keys.isMusicOn.rawValue) == nil {
             isMusicOn = true
+        }
+        if UserDefaults.standard.object(forKey: Keys.isHapticsOn.rawValue) == nil {
+            isHapticsOn = true
         }
     }
 }

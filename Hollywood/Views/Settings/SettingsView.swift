@@ -40,6 +40,13 @@ struct SettingsView: View {
                     )
                 }
                 
+                SwitchButtonView(
+                    image: .vibro,
+                    isOn: vm.isHapticsOn,
+                    size: 80,
+                    action: vm.toggleHaptics
+                )
+                
                 Spacer()
             }
         }

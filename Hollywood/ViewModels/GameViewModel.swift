@@ -89,6 +89,7 @@ final class GameViewModel<Service: GameDataService>: ObservableObject {
             try? storageService.saveGameState(gameState)
             
             if isCorrect {
+                HapticService.shared.play(.success)
                 showCorrectAnswerAnimation = true
                 try? await Task.sleep(nanoseconds: 700_000_000)
                 showCorrectAnswerAnimation = false
@@ -96,9 +97,11 @@ final class GameViewModel<Service: GameDataService>: ObservableObject {
                 await loadNextItem()
             } else {
                 if gameState.abilities.first(where: { $0.type == .skipquestion && $0.isActive }) != nil {
+                    HapticService.shared.play(.warning)
                     try? await Task.sleep(nanoseconds: 500_000_000)
                     await loadNextItem()
                 } else {
+                    HapticService.shared.play(.error)
                     showWrongAnswerAnimation = true
                     try? await Task.sleep(nanoseconds: 700_000_000)
                     showWrongAnswerAnimation = false
@@ -115,6 +118,7 @@ final class GameViewModel<Service: GameDataService>: ObservableObject {
         
         if type == .fiftyfifty {
             if let item = currentItem {
+                HapticService.shared.play(.medium)
                 fiftyFiftyDisabledAnswers = gameService.getDisabledOptions(item.options, correctAnswer: item.correctAnswer)
             }
         }
@@ -124,6 +128,7 @@ final class GameViewModel<Service: GameDataService>: ObservableObject {
             try? storageService.saveGameState(gameState)
             
             if type == .skipquestion {
+                HapticService.shared.play(.selection)
                 Task {
                     await loadNextItem()
                 }

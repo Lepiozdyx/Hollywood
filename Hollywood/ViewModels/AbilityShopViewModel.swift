@@ -38,8 +38,11 @@ final class AbilityShopViewModel: ObservableObject {
     
     func buyAbility(_ type: AbilityType) {
         if let newState = gameService.buyAbility(type, gameState: gameState) {
+            HapticService.shared.play(.success)
             gameState = newState
             try? storageService.saveGameState(gameState)
+        } else {
+            HapticService.shared.play(.error)
         }
     }
     
@@ -51,6 +54,7 @@ final class AbilityShopViewModel: ObservableObject {
     private func checkFirstLaunch() {
         if storageService.isFirstLaunch() {
             showWelcomeAlert = true
+            HapticService.shared.play(.success)
             storageService.setFirstLaunch()
         }
     }
