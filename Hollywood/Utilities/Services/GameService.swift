@@ -17,8 +17,8 @@ protocol GameServiceProtocol {
 }
 
 final class GameService: GameServiceProtocol {
-    private let starsForCorrectAnswer = 10
-    private let starsForWrongAnswer = -10
+    private let starsForCorrectAnswer = 5
+    private let starsForWrongAnswer = -5
     
     func handleAnswer<T: GameItem>(_ answer: String, for item: T, gameState: GameState) -> (isCorrect: Bool, newState: GameState) {
         var newState = gameState
@@ -44,17 +44,13 @@ final class GameService: GameServiceProtocol {
     func useAbility(_ type: AbilityType, gameState: GameState) -> GameState? {
         var newState = gameState
         
-        // Находим индекс способности
         guard let abilityIndex = newState.abilities.firstIndex(where: {
             $0.type == type && $0.count > 0 && !$0.isActive
         }) else {
             return nil
         }
         
-        // Уменьшаем количество доступных использований
         newState.abilities[abilityIndex].count -= 1
-        
-        // Активируем способность
         newState.abilities[abilityIndex].isActive = true
         
         return newState
@@ -81,7 +77,7 @@ final class GameService: GameServiceProtocol {
     
     func prepareForNextQuote(_ gameState: GameState) -> GameState {
         var newState = gameState
-        // Сбрасываем все активные способности
+
         newState.abilities = newState.abilities.map { ability in
             var newAbility = ability
             newAbility.isActive = false
@@ -94,7 +90,7 @@ final class GameService: GameServiceProtocol {
         let wrongAnswers = options
             .filter { $0 != correctAnswer }
             .shuffled()
-            .dropFirst() // Оставляем первый неверный ответ активным
+            .dropFirst()
         return Set(wrongAnswers)
     }
 }

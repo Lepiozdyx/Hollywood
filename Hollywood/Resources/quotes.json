@@ -279,12 +279,12 @@
             "id": "26",
             "text": "You shall not pass!",
             "options": [
-                "The Lord of the Rings: The Fellowship of the Ring",
+                "The Lord of the Rings",
                 "Harry Potter and the Sorcerer's Stone",
                 "The Hobbit",
                 "Narnia"
             ],
-            "correctAnswer": "The Lord of the Rings: The Fellowship of the Ring"
+            "correctAnswer": "The Lord of the Rings"
         },
         {
             "id": "27",
@@ -356,12 +356,12 @@
             "id": "33",
             "text": "My precious.",
             "options": [
-                "The Lord of the Rings: The Two Towers",
+                "The Lord of the Rings",
                 "The Hobbit",
                 "Harry Potter and the Goblet of Fire",
                 "Pan's Labyrinth"
             ],
-            "correctAnswer": "The Lord of the Rings: The Two Towers"
+            "correctAnswer": "The Lord of the Rings"
         },
         {
             "id": "34",

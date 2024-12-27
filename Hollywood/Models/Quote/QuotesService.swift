@@ -14,11 +14,9 @@ protocol QuotesServiceProtocol {
 }
 
 final class QuotesService: QuotesServiceProtocol {
-    // Теперь храним все загруженные вопросы
     private var allQuotes: [Quote] = []
     
     func loadQuotes() async throws -> [Quote] {
-        // Загружаем вопросы только если они еще не загружены
         if allQuotes.isEmpty {
             guard let url = Bundle.main.url(forResource: "quotes", withExtension: "json") else {
                 throw QuotesError.fileNotFound
@@ -27,10 +25,9 @@ final class QuotesService: QuotesServiceProtocol {
             let data = try Data(contentsOf: url)
             let quotesDTO = try JSONDecoder().decode(QuotesDTO.self, from: data)
             
-            // Преобразуем DTO в домейн модели
             allQuotes = quotesDTO.quotes.map { dto in
                 var options = dto.options
-                options.shuffle() // Перемешиваем варианты ответов
+                options.shuffle()
                 return Quote(
                     id: UUID(),
                     text: dto.text,

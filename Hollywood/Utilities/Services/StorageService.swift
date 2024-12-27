@@ -26,7 +26,6 @@ final class StorageService: StorageServiceProtocol {
     
     func loadGameState() throws -> GameState {
         guard let data = defaults.data(forKey: GameState.UserDefaultsKeys.gameState) else {
-            // Возвращаем начальное состояние если нет сохраненного
             return GameState()
         }
         

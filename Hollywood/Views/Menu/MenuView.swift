@@ -25,7 +25,7 @@ struct MenuView: View {
                     }
                     
                     HStack {
-                        // MARK: ShopView()
+                        // MARK: AbilityShopView()
                         NavigationLink(destination: AbilityShopView()) {
                             ActionButtonView(
                                 text: "ABILITIES",
@@ -47,7 +47,7 @@ struct MenuView: View {
                     
                     HStack {
                         // MARK: FactsView()
-                        NavigationLink(destination: EmptyView()) {
+                        NavigationLink(destination: FactsView()) {
                             ActionButtonView(
                                 text: "INTRESTING FACTS",
                                 fontSize: 20,
