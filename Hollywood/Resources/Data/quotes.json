@@ -1,0 +1,554 @@
+{
+    "quotes": [
+        {
+            "id": "1",
+            "text": "May the Force be with you.",
+            "options": [
+                "Star Wars",
+                "Star Trek",
+                "Guardians of the Galaxy",
+                "Dune"
+            ],
+            "correctAnswer": "Star Wars"
+        },
+        {
+            "id": "2",
+            "text": "You talking to me?",
+            "options": [
+                "Taxi Driver",
+                "Scarface",
+                "Pulp Fiction",
+                "Goodfellas"
+            ],
+            "correctAnswer": "Taxi Driver"
+        },
+        {
+            "id": "3",
+            "text": "I see dead people.",
+            "options": [
+                "The Sixth Sense",
+                "The Others",
+                "Insidious",
+                "The Exorcist"
+            ],
+            "correctAnswer": "The Sixth Sense"
+        },
+        {
+            "id": "4",
+            "text": "Keep your friends close, but your enemies closer.",
+            "options": [
+                "The Godfather Part II",
+                "The Godfather",
+                "Goodfellas",
+                "Scarface"
+            ],
+            "correctAnswer": "The Godfather Part II"
+        },
+        {
+            "id": "5",
+            "text": "I'm the king of the world!",
+            "options": [
+                "Titanic",
+                "The Wolf of Wall Street",
+                "Cast Away",
+                "Avatar"
+            ],
+            "correctAnswer": "Titanic"
+        },
+        {
+            "id": "6",
+            "text": "Life is like a box of chocolates. You never know what you're gonna get.",
+            "options": [
+                "Forrest Gump",
+                "Big",
+                "The Green Mile",
+                "Catch Me If You Can"
+            ],
+            "correctAnswer": "Forrest Gump"
+        },
+        {
+            "id": "7",
+            "text": "Hasta la vista, baby.",
+            "options": [
+                "Terminator 2: Judgment Day",
+                "Predator",
+                "Robocop",
+                "Judge Dredd"
+            ],
+            "correctAnswer": "Terminator 2: Judgment Day"
+        },
+        {
+            "id": "8",
+            "text": "Why don't we just wait here for a little while... see what happens.",
+            "options": [
+                "The Thing",
+                "Alien",
+                "The Shining",
+                "Predator"
+            ],
+            "correctAnswer": "The Thing"
+        },
+        {
+            "id": "9",
+            "text": "Bond. James Bond.",
+            "options": [
+                "Dr. No",
+                "Casino Royale",
+                "Skyfall",
+                "Goldfinger"
+            ],
+            "correctAnswer": "Dr. No"
+        },
+        {
+            "id": "10",
+            "text": "They may take our lives, but they'll never take our freedom!",
+            "options": [
+                "Braveheart",
+                "Gladiator",
+                "300",
+                "Troy"
+            ],
+            "correctAnswer": "Braveheart"
+        },
+        {
+            "id": "11",
+            "text": "To infinity and beyond!",
+            "options": [
+                "Toy Story",
+                "Shrek",
+                "Finding Nemo",
+                "The Lion King"
+            ],
+            "correctAnswer": "Toy Story"
+        },
+        {
+            "id": "12",
+            "text": "E.T. phone home.",
+            "options": [
+                "E.T. the Extra-Terrestrial",
+                "Close Encounters of the Third Kind",
+                "Wall-E",
+                "Interstellar"
+            ],
+            "correctAnswer": "E.T. the Extra-Terrestrial"
+        },
+        {
+            "id": "13",
+            "text": "Here’s Johnny!",
+            "options": [
+                "The Shining",
+                "Psycho",
+                "It",
+                "Halloween"
+            ],
+            "correctAnswer": "The Shining"
+        },
+        {
+            "id": "14",
+            "text": "I'm gonna make him an offer he can't refuse.",
+            "options": [
+                "The Godfather",
+                "Scarface",
+                "Casino",
+                "The Sopranos"
+            ],
+            "correctAnswer": "The Godfather"
+        },
+        {
+            "id": "15",
+            "text": "Frankly, my dear, I don't give a damn.",
+            "options": [
+                "Gone with the Wind",
+                "Casablanca",
+                "Citizen Kane",
+                "Lawrence of Arabia"
+            ],
+            "correctAnswer": "Gone with the Wind"
+        },
+        {
+            "id": "16",
+            "text": "Houston, we have a problem.",
+            "options": [
+                "Apollo 13",
+                "The Right Stuff",
+                "First Man",
+                "Gravity"
+            ],
+            "correctAnswer": "Apollo 13"
+        },
+        {
+            "id": "17",
+            "text": "Why so serious?",
+            "options": [
+                "The Dark Knight",
+                "Batman Begins",
+                "Joker",
+                "Suicide Squad"
+            ],
+            "correctAnswer": "The Dark Knight"
+        },
+        {
+            "id": "18",
+            "text": "I'll be back.",
+            "options": [
+                "The Terminator",
+                "Total Recall",
+                "Predator",
+                "Commando"
+            ],
+            "correctAnswer": "The Terminator"
+        },
+        {
+            "id": "19",
+            "text": "Here's looking at you, kid.",
+            "options": [
+                "Casablanca",
+                "Gone with the Wind",
+                "Citizen Kane",
+                "The Maltese Falcon"
+            ],
+            "correctAnswer": "Casablanca"
+        },
+        {
+            "id": "20",
+            "text": "Say hello to my little friend!",
+            "options": [
+                "Scarface",
+                "The Godfather",
+                "Goodfellas",
+                "The Sopranos"
+            ],
+            "correctAnswer": "Scarface"
+        },
+        {
+            "id": "21",
+            "text": "You can't handle the truth!",
+            "options": [
+                "A Few Good Men",
+                "The Firm",
+                "The Pelican Brief",
+                "Runaway Jury"
+            ],
+            "correctAnswer": "A Few Good Men"
+        },
+        {
+            "id": "22",
+            "text": "After all, tomorrow is another day.",
+            "options": [
+                "Gone with the Wind",
+                "Breakfast at Tiffany's",
+                "My Fair Lady",
+                "Rebecca"
+            ],
+            "correctAnswer": "Gone with the Wind"
+        },
+        {
+            "id": "23",
+            "text": "Elementary, my dear Watson.",
+            "options": [
+                "The Adventures of Sherlock Holmes",
+                "Sherlock",
+                "Elementary",
+                "Holmes & Watson"
+            ],
+            "correctAnswer": "The Adventures of Sherlock Holmes"
+        },
+        {
+            "id": "24",
+            "text": "It's alive! It's alive!",
+            "options": [
+                "Frankenstein",
+                "Dracula",
+                "The Mummy",
+                "The Wolf Man"
+            ],
+            "correctAnswer": "Frankenstein"
+        },
+        {
+            "id": "25",
+            "text": "Mama always said life was like a box of chocolates.",
+            "options": [
+                "Forrest Gump",
+                "The Green Mile",
+                "Cast Away",
+                "Philadelphia"
+            ],
+            "correctAnswer": "Forrest Gump"
+        },
+        {
+            "id": "26",
+            "text": "You shall not pass!",
+            "options": [
+                "The Lord of the Rings",
+                "Harry Potter and the Sorcerer's Stone",
+                "The Hobbit",
+                "Narnia"
+            ],
+            "correctAnswer": "The Lord of the Rings"
+        },
+        {
+            "id": "27",
+            "text": "I'm walking here! I'm walking here!",
+            "options": [
+                "Midnight Cowboy",
+                "Taxi Driver",
+                "The Graduate",
+                "Easy Rider"
+            ],
+            "correctAnswer": "Midnight Cowboy"
+        },
+        {
+            "id": "28",
+            "text": "I'm as mad as hell, and I'm not going to take this anymore!",
+            "options": [
+                "Network",
+                "Wall Street",
+                "Dog Day Afternoon",
+                "Serpico"
+            ],
+            "correctAnswer": "Network"
+        },
+        {
+            "id": "29",
+            "text": "I'll have what she's having.",
+            "options": [
+                "When Harry Met Sally...",
+                "Pretty Woman",
+                "Notting Hill",
+                "Sleepless in Seattle"
+            ],
+            "correctAnswer": "When Harry Met Sally..."
+        },
+        {
+            "id": "30",
+            "text": "You're gonna need a bigger boat.",
+            "options": [
+                "Jaws",
+                "The Abyss",
+                "Deep Blue Sea",
+                "Titanic"
+            ],
+            "correctAnswer": "Jaws"
+        },
+        {
+            "id": "31",
+            "text": "Carpe diem. Seize the day, boys.",
+            "options": [
+                "Dead Poets Society",
+                "Good Will Hunting",
+                "The Pursuit of Happyness",
+                "The Great Gatsby"
+            ],
+            "correctAnswer": "Dead Poets Society"
+        },
+        {
+            "id": "32",
+            "text": "I'm the dude, so that's what you call me.",
+            "options": [
+                "The Big Lebowski",
+                "Fargo",
+                "Pulp Fiction",
+                "Reservoir Dogs"
+            ],
+            "correctAnswer": "The Big Lebowski"
+        },
+        {
+            "id": "33",
+            "text": "My precious.",
+            "options": [
+                "The Lord of the Rings",
+                "The Hobbit",
+                "Harry Potter and the Goblet of Fire",
+                "Pan's Labyrinth"
+            ],
+            "correctAnswer": "The Lord of the Rings"
+        },
+        {
+            "id": "34",
+            "text": "I'll never let go, Jack. I'll never let go.",
+            "options": [
+                "Titanic",
+                "Romeo + Juliet",
+                "The Notebook",
+                "Gone with the Wind"
+            ],
+            "correctAnswer": "Titanic"
+        },
+        {
+            "id": "35",
+            "text": "You is kind. You is smart. You is important.",
+            "options": [
+                "The Help",
+                "Precious",
+                "A Beautiful Mind",
+                "The Blind Side"
+            ],
+            "correctAnswer": "The Help"
+        },
+        {
+            "id": "36",
+            "text": "I'm having an old friend for dinner.",
+            "options": [
+                "The Silence of the Lambs",
+                "Seven",
+                "Hannibal",
+                "Cape Fear"
+            ],
+            "correctAnswer": "The Silence of the Lambs"
+        },
+        {
+            "id": "37",
+            "text": "Just keep swimming.",
+            "options": [
+                "Finding Nemo",
+                "Moana",
+                "Frozen",
+                "Shrek"
+            ],
+            "correctAnswer": "Finding Nemo"
+        },
+        {
+            "id": "38",
+            "text": "It’s not who I am underneath, but what I do that defines me.",
+            "options": [
+                "Batman Begins",
+                "The Dark Knight",
+                "Spider-Man",
+                "Iron Man"
+            ],
+            "correctAnswer": "Batman Begins"
+        },
+        {
+            "id": "39",
+            "text": "Roads? Where we're going, we don't need roads.",
+            "options": [
+                "Back to the Future",
+                "The Terminator",
+                "Star Wars",
+                "Blade Runner"
+            ],
+            "correctAnswer": "Back to the Future"
+        },
+        {
+            "id": "40",
+            "text": "That’ll do, pig. That’ll do.",
+            "options": [
+                "Babe",
+                "Charlotte's Web",
+                "The Secret Life of Pets",
+                "Paddington"
+            ],
+            "correctAnswer": "Babe"
+        },
+        {
+            "id": "41",
+            "text": "You complete me.",
+            "options": [
+                "Jerry Maguire",
+                "Pretty Woman",
+                "Notting Hill",
+                "The Notebook"
+            ],
+            "correctAnswer": "Jerry Maguire"
+        },
+        {
+            "id": "42",
+            "text": "Keep the change, ya filthy animal.",
+            "options": [
+                "Home Alone",
+                "Elf",
+                "The Grinch",
+                "Christmas Vacation"
+            ],
+            "correctAnswer": "Home Alone"
+        },
+        {
+            "id": "43",
+            "text": "I'm flying!",
+            "options": [
+                "Titanic",
+                "Peter Pan",
+                "Up",
+                "The Little Mermaid"
+            ],
+            "correctAnswer": "Titanic"
+        },
+        {
+            "id": "44",
+            "text": "I drink your milkshake!",
+            "options": [
+                "There Will Be Blood",
+                "The Wolf of Wall Street",
+                "Gangs of New York",
+                "No Country for Old Men"
+            ],
+            "correctAnswer": "There Will Be Blood"
+        },
+        {
+            "id": "45",
+            "text": "To infinity... and beyond!",
+            "options": [
+                "Toy Story",
+                "Shrek",
+                "Finding Nemo",
+                "The Incredibles"
+            ],
+            "correctAnswer": "Toy Story"
+        },
+        {
+            "id": "46",
+            "text": "I am serious. And don't call me Shirley.",
+            "options": [
+                "Airplane!",
+                "The Naked Gun",
+                "Blazing Saddles",
+                "Monty Python and the Holy Grail"
+            ],
+            "correctAnswer": "Airplane!"
+        },
+        {
+            "id": "47",
+            "text": "You’re tearing me apart, Lisa!",
+            "options": [
+                "The Room",
+                "Rebel Without a Cause",
+                "Sunset Boulevard",
+                "The Disaster Artist"
+            ],
+            "correctAnswer": "The Room"
+        },
+        {
+            "id": "48",
+            "text": "It’s alive! It’s alive!",
+            "options": [
+                "Frankenstein",
+                "Dracula",
+                "The Mummy",
+                "The Invisible Man"
+            ],
+            "correctAnswer": "Frankenstein"
+        },
+        {
+            "id": "49",
+            "text": "Here's Johnny!",
+            "options": [
+                "The Shining",
+                "Psycho",
+                "It",
+                "Halloween"
+            ],
+            "correctAnswer": "The Shining"
+        },
+        {
+            "id": "50",
+            "text": "You had me at hello.",
+            "options": [
+                "Jerry Maguire",
+                "The Notebook",
+                "Pretty Woman",
+                "Titanic"
+            ],
+            "correctAnswer": "Jerry Maguire"
+        }
+    ]
+}

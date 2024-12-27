@@ -23,6 +23,11 @@ struct ActionButtonView: View {
                     .multilineTextAlignment(.center)
                     .padding()
             }
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    SoundService.shared.playSound()
+                }
+            )
     }
 }
 

@@ -56,7 +56,7 @@ struct MenuView: View {
                             )
                         }
                         // MARK: SettingsView()
-                        NavigationLink(destination: EmptyView()) {
+                        NavigationLink(destination: SettingsView()) {
                             ActionButtonView(
                                 text: "SETTINGS",
                                 fontSize: 26,
@@ -70,6 +70,9 @@ struct MenuView: View {
             }
         }
         .navigationViewStyle(.stack)
+        .onAppear {
+            SoundService.shared.updateMusicState()
+        }
     }
 }
 

@@ -15,6 +15,7 @@ struct AbilityButtonView: View {
         Button {
             if ability.count > 0 && !ability.isActive {
                 action()
+                SoundService.shared.playSound()
             }
         } label: {
             Image(.circle)

@@ -12,6 +12,7 @@ struct BackButtonView: View {
     var body: some View {
         Button {
             dismiss()
+            SoundService.shared.playSound()
         } label: {
             Image(.backArrow)
                 .resizable()
