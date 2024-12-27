@@ -16,7 +16,7 @@ struct BackButtonView: View {
         } label: {
             Image(.backArrow)
                 .resizable()
-                .frame(width: 35, height: 35)
+                .frame(width: 40, height: 40)
         }
     }
 }

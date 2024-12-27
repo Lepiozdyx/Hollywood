@@ -28,14 +28,14 @@ struct SettingsView: View {
                     SwitchButtonView(
                         image: .sound,
                         isOn: vm.isSoundOn,
-                        size: 80,
+                        size: 100,
                         action: vm.toggleSound
                     )
                     
                     SwitchButtonView(
                         image: .music,
                         isOn: vm.isMusicOn,
-                        size: 80,
+                        size: 100,
                         action: vm.toggleMusic
                     )
                 }
@@ -43,7 +43,7 @@ struct SettingsView: View {
                 SwitchButtonView(
                     image: .vibro,
                     isOn: vm.isHapticsOn,
-                    size: 80,
+                    size: 100,
                     action: vm.toggleHaptics
                 )
                 

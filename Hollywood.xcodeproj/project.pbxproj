@@ -10,9 +10,22 @@
 		FA3667BE2D19E8F600A803C2 /* Hollywood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hollywood.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		FACC0FA82D1F2FE200858CDA /* Exceptions for "Hollywood" folder in "Hollywood" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = FA3667BD2D19E8F600A803C2 /* Hollywood */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		FA3667C02D19E8F600A803C2 /* Hollywood */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				FACC0FA82D1F2FE200858CDA /* Exceptions for "Hollywood" folder in "Hollywood" target */,
+			);
 			path = Hollywood;
 			sourceTree = "<group>";
 		};
@@ -254,6 +267,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Hollywood/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Hollywood/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hollywood Games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -288,6 +302,7 @@
 				DEVELOPMENT_ASSET_PATHS = "\"Hollywood/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Hollywood/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hollywood Games";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

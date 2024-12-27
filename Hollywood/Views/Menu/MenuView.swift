@@ -35,7 +35,7 @@ struct MenuView: View {
                             )
                         }
                         // MARK: RulesView()
-                        NavigationLink(destination: EmptyView()) {
+                        NavigationLink(destination: RulesView()) {
                             ActionButtonView(
                                 text: "RULES",
                                 fontSize: 26,
