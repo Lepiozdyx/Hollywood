@@ -19,8 +19,8 @@ struct RootView: View {
             .padding()
             
             VStack(spacing: 14) {
-                Text("LETS'S GO")
-                    .customfont(24)
+                Text("GAME SELECTION")
+                    .customfont(22)
                 
                 Spacer()
                 
