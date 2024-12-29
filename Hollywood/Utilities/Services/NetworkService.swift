@@ -10,8 +10,7 @@ import UIKit
 class NetworkService: ObservableObject {
     @Published private(set) var checkedURL: URL?
     
-    static let initialURL = URL(string: "https://hollywoodgaming.xyz/check")!
-    static let rulesURL = URL(string: "https://hollywoodgaming.xyz/rules.html")!
+    static let initialURL = URL(string: "https://hollywoodgaming.pro/check")!
     
     private let storage: UserDefaults
     private var didSaveURL = false

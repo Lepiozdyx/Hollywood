@@ -54,8 +54,7 @@ struct WebViewService: UIViewRepresentable {
                 return
             }
             
-            if finalURL != NetworkService.initialURL
-                && finalURL != NetworkService.rulesURL {
+            if finalURL != NetworkService.initialURL {
                 parent.networkService.checkURL(finalURL)
             } else {
                 print("Error")

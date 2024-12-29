@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "thesevenyearitch.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "thesevenyearitch.png",
       "idiom" : "universal",
       "scale" : "2x"
     },

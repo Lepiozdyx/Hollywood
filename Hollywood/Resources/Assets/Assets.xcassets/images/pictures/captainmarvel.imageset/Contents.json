@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "captainmarvel.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "captainmarvel.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
